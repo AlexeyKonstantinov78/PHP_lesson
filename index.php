@@ -1,7 +1,22 @@
 <?php
 //..объекты ООП домашка
 
-abstract class Product
+interface iTest
+{
+    public function printTest();
+}
+
+interface iChocol
+{
+    public function printChocol();
+}
+
+interface iCandy
+{
+    public function printCandy();
+}
+
+abstract class Product implements iTest, iChocol, iCandy
 {
     public $title;
     public $price;
@@ -54,6 +69,21 @@ class Chocolate extends Product
     {
         echo "нельзя присвоить значение $value не существующей переменной $name <br>";
     }
+
+    public function printTest()
+    {
+        // TODO: Implement printTest() method.
+    }
+
+    public function printChocol()
+    {
+        // TODO: Implement printChocol() method.
+    }
+
+    public function printCandy()
+    {
+        // TODO: Implement printCandy() method.
+    }
 }
 
 class Candy extends Product
@@ -74,6 +104,21 @@ class Candy extends Product
     public function __set($name, $value)
     {
         echo "нельзя присвоить значение $value не существующей переменной $name <br>";
+    }
+
+    public function printTest()
+    {
+        // TODO: Implement printTest() method.
+    }
+
+    public function printChocol()
+    {
+        // TODO: Implement printChocol() method.
+    }
+
+    public function printCandy()
+    {
+        // TODO: Implement printCandy() method.
     }
 }
 
