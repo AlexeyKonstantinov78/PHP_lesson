@@ -9,7 +9,7 @@ $summ = hello();
 echo $summ;
 ?>
 <div>
-    <a href="/portfolio">
+    <a href="/portfolio_db">
         <h1>Портфолио</h1>
     </a>
 </div>
