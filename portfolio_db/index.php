@@ -17,12 +17,12 @@ $skills = $connection->query("SELECT * FROM skills");
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
 <!--[if !IE]><!--> <html lang="ru"> <!--<![endif]-->
 <head>
-    <title>Responsive Resume/CV Template for Developers</title>
+    <title>Резюме Алексей Константинов</title>
     <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Responsive HTML5 Resume/CV Template for Developers">
+    <meta name="description" content="Резюме Алексей Константинов">
     <link rel="shortcut icon" href="favicon.ico">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,400italic,300italic,300,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
     <!-- Global CSS -->
@@ -153,7 +153,29 @@ $skills = $connection->query("SELECT * FROM skills");
                     <? } ?>
                 </div>
             </section><!--//skills-section-->
-            
+
+            <section>
+                <h2 class="section-title"><i class="fa fa-rocket"></i>Отзывы</h2>
+                <form action="" method="POST">
+                    <input type="text" name="comment" required>
+                    <input type="submit">
+                </form>
+
+                <?
+                if ($_POST['comment']) {
+                    echo $_POST['comment'];
+                    $newComment = $_POST['comment'];
+                    $connection->query("insert into comments (comment) VALUE ('$newComment')");
+                }
+
+                $allComments = $connection->query("SELECT * FROM comments ORDER BY id DESC");
+                foreach ($allComments as $comment){
+                    echo "<div>" . $comment['comment'] . "  " . $comment['data'] . "</div>";
+                }
+                ?>
+            </section>
+
+
         </div><!--//main-body-->
     </div>
  
