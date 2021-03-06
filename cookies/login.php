@@ -15,12 +15,14 @@
             if($_POST['login'] == $log['login'] && $_POST['password'] == $log['password']) {
                 $_SESSION['login'] = $_POST['login'];
                 $_SESSION['password'] = $_POST['password'];
+                setcookie('color', $_POST['color'], time() + 3600);
                 header("Location: content.php");
             }
         }
 
         echo "Неверный логин или пароль";
     }
+
 
 ?>
 
@@ -35,6 +37,12 @@
 </style>
 
 <form method="post">
+    <p>Выберите цвет </p>
+    <select name="color">
+        <option value="white" selected >Белый</option>
+        <option value="red">Красны</option>
+        <option value="blue">Синий</option>
+    </select>
     <p>Авторизуйтесь</p>
     <input type="text" name="login" required placeholder="Логин"> <br>
     <input type="password" name="password" required placeholder="Пароль"> <br>
