@@ -166,6 +166,7 @@ $skills = $connection->query("SELECT * FROM skills");
                     echo $_POST['comment'];
                     $newComment = $_POST['comment'];
                     $connection->query("insert into comments (comment) VALUE ('$newComment')");
+                    header('Location: index.php');
                 }
 
                 $allComments = $connection->query("SELECT * FROM comments ORDER BY id DESC");
