@@ -11,7 +11,6 @@
         header("Location: login.php");
     }
     $color = $_COOKIE['color'];
-
 ?>
 
 <body style="font-size: 40px; background-color: <?=$color?>">
