@@ -6,6 +6,10 @@
     $connection = new PDO('mysql:host=localhost:3305; dbname=practice_db; charset=utf8', 'root', 'root');
     $login = $connection->query("SELECT * FROM login");
 
+    if($_SESSION['login'] || $_SESSION['password']) {
+        header("Location: content.php");
+    }
+
     if($_POST['login']) {
         foreach ($login as $log) {
             if($_POST['login'] == $log['login'] && $_POST['password'] == $log['password']) {
@@ -17,6 +21,7 @@
 
         echo "Неверный логин или пароль";
     }
+
 ?>
 
 <style>
