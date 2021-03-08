@@ -2,7 +2,7 @@
 
     $connection = new PDO('mysql:host=localhost:3305; dbname=practice_db; charset=utf8', 'root', 'root');
     $msg = '';
-    $base_url = 'http://academyphp:81/cookies/activation.php/';
+    $base_url = 'http://academyphp:81/cookies/activation.php?code=';
 
     if($_POST['login'] && $_POST['password'] && $_POST['email']) {
         $login = $_POST['login'];

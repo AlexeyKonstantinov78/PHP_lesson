@@ -13,7 +13,7 @@ function Send_Mail($to,$subject,$body)
     $mail->SMTPSecure = 'ssl';
     $mail->Port       =  465;                    // устанавливаем SMTP порт
     $mail->Username   = "info@alekseykonstantinov.ru";  //имя пользователя SMTP
-    $mail->Password   = "csgT72lhclnp";  // SMTP пароль
+    $mail->Password   = "";  // SMTP пароль
     $mail->SetFrom($from, 'From Name');
 
     $mail->AddReplyTo($from,'From Name');
