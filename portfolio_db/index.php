@@ -165,9 +165,9 @@ $skills = $connection->query("SELECT * FROM skills");
                 if ($_POST['comment']) {
                     echo $_POST['comment'];
                     $newComment = $_POST['comment'];
-                    $connection->query("insert into comments (comment) VALUE ('$newComment')");
-                    header('Location: index.php');
-                }
+
+
+                                    }
 
                 $allComments = $connection->query("SELECT * FROM comments ORDER BY id DESC");
                 foreach ($allComments as $comment){
@@ -187,7 +187,7 @@ $skills = $connection->query("SELECT * FROM skills");
         </div><!--//container-->
     </footer><!--//footer-->
  
-    <!-- Javascript -->          
+    <!-- Javascript 41--> 011
     <script type="text/javascript" src="assets/plugins/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>    
     <!-- custom js -->

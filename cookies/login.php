@@ -43,7 +43,7 @@
         <option value="red">Красны</option>
         <option value="blue">Синий</option>
     </select>
-    <p>Авторизуйтесь</p>
+    <p>Авторизуйтесь</p><p><a href="registration.php">Зарегистрируйтесь</a></p>
     <input type="text" name="login" required placeholder="Логин"> <br>
     <input type="password" name="password" required placeholder="Пароль"> <br>
     <input type="submit">
