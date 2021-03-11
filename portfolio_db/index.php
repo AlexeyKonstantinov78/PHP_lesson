@@ -9,6 +9,17 @@ $aboutCareer = $connection->query("SELECT * from aboutcareer");
 $aboutCareer = $aboutCareer->fetch();
 $career = $connection->query("SELECT * from career order by id DESC");
 $skills = $connection->query("SELECT * FROM skills");
+
+if ($_POST['comment']) {
+    // защита XSS переводим в строку чтобы теги не читал
+    $newComment = htmlspecialchars($_POST['comment']);
+    // защита от SQL инекции
+    $save = $connection -> prepare("INSERT INTO practice_db.comments (comment) VALUES (:newComment)");
+    $arr = ['newComment'=>$newComment];
+    $save->execute($arr);
+
+    header('Location: index.php');
+}
 ?>
 
 
@@ -156,24 +167,18 @@ $skills = $connection->query("SELECT * FROM skills");
 
             <section>
                 <h2 class="section-title"><i class="fa fa-rocket"></i>Отзывы</h2>
-                <form action="" method="POST">
-                    <input type="text" name="comment" required>
+                <form action="" method="POST" style="margin-bottom: 10px">
+                    <input type="text" name="comment" required style="width: 300px">
                     <input type="submit">
                 </form>
 
                 <?
-                if ($_POST['comment']) {
-                    echo $_POST['comment'];
-                    $newComment = $_POST['comment'];
-
-
-                                    }
-
                 $allComments = $connection->query("SELECT * FROM comments ORDER BY id DESC");
-                foreach ($allComments as $comment){
-                    echo "<div>" . $comment['comment'] . "  " . $comment['data'] . "</div>";
-                }
-                ?>
+                foreach ($allComments as $comment) { ?>
+                    <div><?=$comment['data'] . "  " . $comment['comment'] ?></div>
+                    <hr style="margin: 0"/>
+                    <br>
+                <? } ?>
             </section>
 
 
