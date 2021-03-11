@@ -8,7 +8,12 @@
         $text = htmlspecialchars($_POST['text']);
         //$text = strip_tags($_POST['text']);
         $time = date("Y-m-d H:i:s");
-        $connection -> query("INSERT INTO comments (username, comment, date) VALUES ('$username', '$text', '$time')");
+        //$connection -> query("INSERT INTO comments (username, comment, date) VALUES ('$username', '$text', '$time')"); //для защиты от sql инекций нужно подготовить запрос prepare
+
+        //защита от sql инекций
+        $save = $connection -> prepare("INSERT INTO comments (username, comment, date) VALUES (:username, :text, '$time')");
+        $arr = ['username'=>$username, 'text'=>$text];
+        $save->execute($arr);
 
         header('Location: index.php');
     }
