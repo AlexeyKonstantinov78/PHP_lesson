@@ -3,8 +3,10 @@
     $data = $connection -> query('select * from comments where moderation="ok" ORDER BY date DESC');
 
     if ($_POST['text']) {
-        $username = ucfirst(htmlspecialchars($_POST['username']));
+        //$username = strip_tags($_POST['username']);// strip_tags вырезает теги из сообщения защита XSS
+        $username = htmlspecialchars($_POST['username']);// превращает все в текст защита XSS
         $text = htmlspecialchars($_POST['text']);
+        //$text = strip_tags($_POST['text']);
         $time = date("Y-m-d H:i:s");
         $connection -> query("INSERT INTO comments (username, comment, date) VALUES ('$username', '$text', '$time')");
 
@@ -44,7 +46,7 @@
     <h3>Все сообщения проходят модерацию</h3>
     <? if ($data) {
         foreach ($data as $dat) {?>
-            <p><?=$dat['date'] . " " . $dat['username'] ?> написал <?=$dat['comment'] ?>.</p>
+            <p><?=$dat['date'] . " " . $dat['username'] ?> написал: "<?=$dat['comment'] ?>".</p>
             <hr>
         <? }} ?>
 </body>
