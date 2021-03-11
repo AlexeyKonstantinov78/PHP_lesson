@@ -18,5 +18,8 @@ echo $summ;
     <a href="/cookies/login.php">
         <h1>Авторизация</h1>
     </a>
+    <a href="/safety_lesson/index.php">
+        <h1>Форум</h1>
+    </a>
 </div>
 
