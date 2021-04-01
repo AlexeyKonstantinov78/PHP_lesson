@@ -3,65 +3,72 @@ $connection = new PDO('mysql:host=localhost:3305; dbname=forum; charset=utf8', '
 
 // отправка на сервер
 if(isset($_POST['submit'])) {
-    $fileName = $_FILES['file']['name'];
-    $fileTmpName = $_FILES['file']['tmp_name'];
-    $fileType = $_FILES['file']['type'];
-    $fileError = $_FILES['file']['error'];
-    $fileSize = $_FILES['file']['size'];
 
-    // фун explode('.', $fileName) превращает в массив разделенный по точкам abc.xzc.er
-    // фун end обращение к последнему элементу массива
-    // strtolower принудительно превращаем все буквы прописные.
+    // при отправке нескольких файлов получаем объект
+    $fileCount = count($_FILES['file']['name']);
+    // цикл для разбора объекта
+    for ($indx = 0; $indx < $fileCount; $indx++) {
 
-    $fileExtension = strtolower(end(explode('.', $fileName)));
+        $fileName = $_FILES['file']['name'][$indx];
+        $fileTmpName = $_FILES['file']['tmp_name'][$indx];
+        $fileType = $_FILES['file']['type'][$indx];
+        $fileError = $_FILES['file']['error'][$indx];
+        $fileSize = $_FILES['file']['size'][$indx];
 
-    //получение имени файла если несколько точек и одно
-    $arr = explode('.', $fileName);
-    $count = count($arr);
-    // условие проверки на несколько точек в названии
-    if ($count > 2) {
-        $fileTempName = '';
+        // фун explode('.', $fileName) превращает в массив разделенный по точкам abc.xzc.er
+        // фун end обращение к последнему элементу массива
+        // strtolower принудительно превращаем все буквы прописные.
 
-        for ($i = 0; $i < $count - 1; $i++) {
-            if ($i == 0) {
-                $fileTempName = $arr[$i];
-            } else {
-                $fileTempName = $fileTempName . '.' . $arr[$i];
+        $fileExtension = strtolower(end(explode('.', $fileName)));
+
+        //получение имени файла если несколько точек и одно
+        $arr = explode('.', $fileName);
+        $count = count($arr);
+        // условие проверки на несколько точек в названии
+        if ($count > 2) {
+            $fileTempName = '';
+
+            for ($i = 0; $i < $count - 1; $i++) {
+                if ($i == 0) {
+                    $fileTempName = $arr[$i];
+                } else {
+                    $fileTempName = $fileTempName . '.' . $arr[$i];
+                }
             }
+            $fileName = $fileTempName;
+        } else {
+            $fileName = $arr[0];
         }
-        $fileName = $fileTempName;
-    } else {
-        $fileName = $arr[0];
-    }
 
-    $fileName = preg_replace('/[0-9]/', '', $fileName); // регулярное выражение по замене цифр
-    $allowedExtensions = ['jpg', 'jpeg', 'png']; // массив с разрешёнными типами файлов
+        $fileName = preg_replace('/[0-9]/', '', $fileName); // регулярное выражение по замене цифр
+        $allowedExtensions = ['jpg', 'jpeg', 'png']; // массив с разрешёнными типами файлов
 
-    // сверка на разрешённый тип
-    if (in_array($fileExtension, $allowedExtensions)) {
-        // проверка на объем
-        if ($fileSize < 300000) {
-            //проверка на ошибку
-            if ($fileError === 0) {
-                $connection->query("INSERT INTO images (imagename, extension) VALUES ('$fileName', '$fileExtension')");
-                //получаем id
-                $lastID = $connection->query("select MAX(id) from images");
-                $lastID = $lastID->fetchAll();
-                $lastID = $lastID[0][0];
-                $fileNameNew = $lastID . '_' . $fileName . '.' . $fileExtension; // название файла
-                $fileDestination = 'uploads/' . $fileNameNew; // путь где будит хранится
-                move_uploaded_file($fileTmpName, $fileDestination); // копирует файл на сервер
-                header('Location: index.php');
-                echo 'Успех';
+        // сверка на разрешённый тип
+        if (in_array($fileExtension, $allowedExtensions)) {
+            // проверка на объем
+            if ($fileSize < 300000) {
+                //проверка на ошибку
+                if ($fileError === 0) {
+                    $connection->query("INSERT INTO images (imagename, extension) VALUES ('$fileName', '$fileExtension')");
+                    //получаем id
+                    $lastID = $connection->query("select MAX(id) from images");
+                    $lastID = $lastID->fetchAll();
+                    $lastID = $lastID[0][0];
+                    $fileNameNew = $lastID . '_' . $fileName . '.' . $fileExtension; // название файла
+                    $fileDestination = 'uploads/' . $fileNameNew; // путь где будит хранится
+                    move_uploaded_file($fileTmpName, $fileDestination); // копирует файл на сервер
+                    header('Location: index.php');
+                    echo 'Успех';
 
+                } else {
+                    echo "Что-то пошло не так" . $fileError;
+                }
             } else {
-                echo "Что-то пошло не так" . $fileError;
+                echo "слишком большой размер файла";
             }
         } else {
-            echo "слишком большой размер файла";
+            echo "неверный тип файла";
         }
-    } else {
-        echo "неверный тип файла";
     }
 }
     // получение загруженных картинок
@@ -100,8 +107,8 @@ if(isset($_POST['submit'])) {
 
 /*echo "<pre>";
 var_dump($_FILES);
-echo "</pre>";
-echo "<pre>";
+echo "</pre>";*/
+/*echo "<pre>";
 var_dump($fileExtension);
 echo "</pre>";
 echo "<pre>";
@@ -130,9 +137,10 @@ echo "</pre>";*/
     </style>
 </head>
 <body>
-    <!--// вслучае отправки файлов на сервер необходитмо поставить enctype="multipart/form-data"-->
+    <!--// вслучае отправки файлов на сервер необходитмо поставить enctype="multipart/form-data", для отправки нескольких
+    файлов в тег инпут добаляем multiple-->
     <form method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
+        <input multiple type="file" name="file[]" required/>
         <button name="submit">Отправить</button>
     </form>
 
