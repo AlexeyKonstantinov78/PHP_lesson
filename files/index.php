@@ -56,9 +56,14 @@ if(isset($_POST['submit'])) {
                     $lastID = $lastID[0][0];
                     $fileNameNew = $lastID . '_' . $fileName . '.' . $fileExtension; // название файла
                     $fileDestination = 'uploads/' . $fileNameNew; // путь где будит хранится
-                    move_uploaded_file($fileTmpName, $fileDestination); // копирует файл на сервер
-                    header('Location: index.php');
-                    echo 'Успех';
+                    // проверка был ли файл загружен при помощи HTTP POST и возвращает TRUE, если это так.
+                    if (is_uploaded_file($fileTmpName)) {
+                        move_uploaded_file($fileTmpName, $fileDestination); // копирует файл на сервер
+                        header('Location: index.php');
+                        echo 'Успех';
+                    } else {
+                        echo("Ошибка загрузки файла");
+                    }
 
                 } else {
                     echo "Что-то пошло не так" . $fileError;
