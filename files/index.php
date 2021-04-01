@@ -11,14 +11,38 @@ if(isset($_POST['submit'])) {
 
     // фун explode('.', $fileName) превращает в массив разделенный по точкам abc.xzc.er
     // фун end обращение к последнему элементу массива
-    // принудительно превращаем все буквы прописные.
+    // strtolower принудительно превращаем все буквы прописные.
 
     $fileExtension = strtolower(end(explode('.', $fileName)));
-    $fileName = explode('.', $fileName)[0];
-    $fileName = preg_replace('/[0-9]/', '', $fileName); // регулярное выражение по замене цифр
-    $allowedExtensions = ['jpg', 'jpeg', 'png']; // масив с разрешонными типами файлов
 
-    // сверка на разрешонный тип
+    //получение имени файла если несколько точек и одно
+
+    $arr = explode('.', $fileName);
+    $count = count($arr);
+    // условие проверки на несколько точек в названии
+    if ($count > 2) {
+        $fileTempName = '';
+
+        for ($i = 0; $i < $count - 1; $i++) {
+            if ($i == 0) {
+                $fileTempName = $arr[$i];
+            } else {
+                $fileTempName = $fileTempName . '.' . $arr[$i];
+            }
+        }
+        $fileName = $fileTempName;
+    } else {
+        $fileName = $arr[0];
+    }
+
+    echo "<pre>";
+    var_dump($fileName);
+    echo "</pre>";
+
+    $fileName = preg_replace('/[0-9]/', '', $fileName); // регулярное выражение по замене цифр
+    $allowedExtensions = ['jpg', 'jpeg', 'png']; // массив с разрешёнными типами файлов
+
+    // сверка на разрешённый тип
     if (in_array($fileExtension, $allowedExtensions)) {
         // проверка на объем
         if ($fileSize < 300000) {
@@ -32,7 +56,7 @@ if(isset($_POST['submit'])) {
                 $fileNameNew = $lastID . '_' . $fileName . '.' . $fileExtension; // название файла
                 $fileDestination = 'uploads/' . $fileNameNew; // путь где будит хранится
                 move_uploaded_file($fileTmpName, $fileDestination); // копирует файл на сервер
-                header('Location: index.php');
+                //header('Location: index.php');
                 echo 'Успех';
 
             } else {
@@ -82,9 +106,15 @@ if(isset($_POST['submit'])) {
 
 
 
-//echo "<pre>";
-//var_dump($_FILES);
-//echo "</pre>";
+echo "<pre>";
+var_dump($_FILES);
+echo "</pre>";
+echo "<pre>";
+var_dump($fileExtension);
+echo "</pre>";
+echo "<pre>";
+var_dump($fileName);
+echo "</pre>";
 
 ?>
 
