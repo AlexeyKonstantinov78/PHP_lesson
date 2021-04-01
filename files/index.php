@@ -16,7 +16,6 @@ if(isset($_POST['submit'])) {
     $fileExtension = strtolower(end(explode('.', $fileName)));
 
     //получение имени файла если несколько точек и одно
-
     $arr = explode('.', $fileName);
     $count = count($arr);
     // условие проверки на несколько точек в названии
@@ -35,10 +34,6 @@ if(isset($_POST['submit'])) {
         $fileName = $arr[0];
     }
 
-    echo "<pre>";
-    var_dump($fileName);
-    echo "</pre>";
-
     $fileName = preg_replace('/[0-9]/', '', $fileName); // регулярное выражение по замене цифр
     $allowedExtensions = ['jpg', 'jpeg', 'png']; // массив с разрешёнными типами файлов
 
@@ -56,7 +51,7 @@ if(isset($_POST['submit'])) {
                 $fileNameNew = $lastID . '_' . $fileName . '.' . $fileExtension; // название файла
                 $fileDestination = 'uploads/' . $fileNameNew; // путь где будит хранится
                 move_uploaded_file($fileTmpName, $fileDestination); // копирует файл на сервер
-                //header('Location: index.php');
+                header('Location: index.php');
                 echo 'Успех';
 
             } else {
@@ -87,7 +82,6 @@ if(isset($_POST['submit'])) {
                 unlink($image);
             }
         }
-
         //вывод на экран
 
         // проверка на наличие такого файла
@@ -104,9 +98,7 @@ if(isset($_POST['submit'])) {
     }
     echo "</div>";
 
-
-
-echo "<pre>";
+/*echo "<pre>";
 var_dump($_FILES);
 echo "</pre>";
 echo "<pre>";
@@ -114,7 +106,7 @@ var_dump($fileExtension);
 echo "</pre>";
 echo "<pre>";
 var_dump($fileName);
-echo "</pre>";
+echo "</pre>";*/
 
 ?>
 
